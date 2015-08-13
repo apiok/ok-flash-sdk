@@ -1,7 +1,8 @@
 package api.com.odnoklassniki.sdk.messages 
 {
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Messages 
+
+	public class Messages
 	{
 		/**
 		 * Retrieves the list of recent conversations with friends. All messages are grouped into conversations. Each conversation contains messages sent to/received from one distinct user.

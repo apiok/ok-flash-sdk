@@ -10,7 +10,7 @@ package api.com.odnoklassniki.core
 	import flash.net.LocalConnection;
 	import flash.utils.Timer;
 
-	public class OdnoklassnikiSession 
+	public class OdnoklassnikiSession
 	{
 		
 		/**

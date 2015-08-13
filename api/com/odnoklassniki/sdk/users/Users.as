@@ -1,7 +1,8 @@
 package api.com.odnoklassniki.sdk.users 
 {
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Users 
+
+	public class Users
 	{
 		
 		/**

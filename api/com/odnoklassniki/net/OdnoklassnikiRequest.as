@@ -1,4 +1,4 @@
-package api.com.odnoklassniki.net 
+package api.com.odnoklassniki.net
 {
 	import api.com.adobe.images.PNGEncoder;
 	import api.com.adobe.json.JSON;
@@ -16,10 +16,10 @@ package api.com.odnoklassniki.net
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
 	import flash.utils.ByteArray;
-	
+
 	public class OdnoklassnikiRequest
 	{
-		
+
 		protected var urlLoader:URLLoader;
 		protected var urlRequest:URLRequest;
 		protected var _data:Object;
@@ -29,13 +29,13 @@ package api.com.odnoklassniki.net
 		protected var _success:Boolean = false;
 		protected var _format:String = "XML";
 		protected var _method:String;
-		
+
 		public function OdnoklassnikiRequest(url:String, requestMethod:String = 'GET', callback:Function = null){
 			_serverUrl = url;
 			_requestMethod = requestMethod;
 			_callback = callback;
 		}
-		
+
 		/**
 		 * @param	method 		- Rest API method
 		 * @param	data 		- data object
@@ -49,30 +49,30 @@ package api.com.odnoklassniki.net
 			}
 			_method = method;
 			_format = format;
-			
+
 			//If user wants to upload photos
 			if (method == "photos.upload") {
 				uploadPhotos(data, callback, format, url);
 				return;
 			}
-			
+
 			if (!data) data = { };
-			
+
 			data['method'] = method;
-			
+
 			if(!data.sig){
 				data = Odnoklassniki.getSignature(data, false, format);
 			}
-			
+
 			var req_url:String = (url) ? url+"fb.do" : _serverUrl + "fb.do";
-			
+
 			urlRequest = new URLRequest(req_url);
 			urlRequest.method = _requestMethod;
 			urlRequest.data = getUrlVars(data);
-			
+
 			load();
         }
-		
+
 		/**
 		 * Upload photos to server
 		 * @param	data 		- data object
@@ -82,11 +82,11 @@ package api.com.odnoklassniki.net
 		 */
 		public function uploadPhotos(data:*, callback:Function = null, format:String = "JSON", url:String = null):void {
 			if (!data) data = { };
-			
+
 			data['method'] = "photos.upload";
-			
+
 			var req_url:String = (url) ? url + "fb.do" : _serverUrl + "fb.do";
-			
+
 			//Check to see if there is a file we can upload.
 			var fileData:Array = [];
 			if(data.files){
@@ -97,20 +97,20 @@ package api.com.odnoklassniki.net
 				}
 				delete data.files;
 			}
-			
+
 			//getting signature for request
 			data = Odnoklassniki.getSignature(data, false, format);
 			req_url += getUrlParams(data);
-			
+
 			urlRequest = new URLRequest(req_url);
-			
+
 			//There is no files, so just send it off.
 			if (fileData.length==0) {
 				urlRequest.data = getUrlVars(data);
                 load();
                 return;
 			}
-			
+
 			//There is fileData attached here, need to format it correctly,
             //then send it to Facebook.
             var post:PostRequest = new PostRequest();
@@ -134,17 +134,17 @@ package api.com.odnoklassniki.net
 				fileData[i] = null;
 			}
 			fileData = null;
-			
+
 			post.close();
-			
+
 			urlRequest.method = URLRequestMethod.POST;
             urlRequest.data = post.getPostData();
-			
+
 			urlRequest.requestHeaders.push(new URLRequestHeader('Content-Type', 'multipart/form-data; boundary=' + post.boundary));
-			
+
             load();
 		}
-		
+
 		private function getUrlParams(data:Object):String
 		{
 			var s:String = "?";
@@ -154,12 +154,12 @@ package api.com.odnoklassniki.net
 			}
 			return s;
 		}
-		
+
 		protected function isValueFile(value:Object):Boolean {
             return (value is Bitmap || value is BitmapData || value is ByteArray);
         }
-		
-		private function getUrlVars(data:Object):URLVariables 
+
+		private function getUrlVars(data:Object):URLVariables
 		{
 			var urlVars:URLVariables = new URLVariables();
             if (data == null) {
@@ -172,8 +172,8 @@ package api.com.odnoklassniki.net
 
             return urlVars;
 		}
-		
-		private function load():void 
+
+		private function load():void
 		{
 			urlLoader = new URLLoader();
             urlLoader.addEventListener(Event.COMPLETE, onComplete, false, 0, false);
@@ -181,13 +181,13 @@ package api.com.odnoklassniki.net
             urlLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError, false, 0, true);
 
             urlLoader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError, false, 0, true);
-			
+
 			urlLoader.addEventListener(ProgressEvent.PROGRESS, onProgress, false, 0, true);
 
             urlLoader.load(urlRequest);
 		}
-		
-		private function onComplete(e:Event):void 
+
+		private function onComplete(e:Event):void
 		{
 			if(_format == "JSON"){
 				_data = api.com.adobe.json.JSON.decode(urlLoader.data);
@@ -197,37 +197,42 @@ package api.com.odnoklassniki.net
 			}else{
 				_data = urlLoader.data;
 			}
-			_success = true;
 			complete();
 		}
-		
-		private function complete():void 
-		{
-			_callback(this);
+
+		private function complete():void {
+			_success = true;
+			if (_callback!=null) {
+    			_callback(this);
+			}
 			close();
 		}
-		
-		private function onIOError(e:IOErrorEvent):void 
-		{
+
+		private function onIOError(e:IOErrorEvent):void {
+			failed();
+		}
+
+		private function onSecurityError(e:SecurityErrorEvent):void {
+			failed();
+		}
+
+		private function failed():void {
 			_success = false;
-		}
-		
-		private function onSecurityError(e:SecurityErrorEvent):void 
-		{
 			if (_callback!=null) {
-				_callback( { error:"security_error" } );
+				_callback(this);
 			}
+			close();
 		}
-		
-		private function onProgress(e:ProgressEvent):void 
+
+		private function onProgress(e:ProgressEvent):void
 		{
-			
+
 		}
-		
+
 		/**
 		 * Closes the connection and removing all listeners
 		 */
-		private function close():void 
+		private function close():void
 		{
 			if (urlLoader != null) {
                 urlLoader.removeEventListener(Event.COMPLETE, onComplete);
@@ -242,15 +247,15 @@ package api.com.odnoklassniki.net
                 urlLoader = null;
             }
 		}
-		
+
 		public function get data():Object {
 			return _data;
 		}
-		
+
 		public function get success():Boolean {
 			return _success;
 		}
-		
+
 	}
 
 }

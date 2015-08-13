@@ -2,7 +2,7 @@ package api.com.odnoklassniki.sdk.discussions
 {
 	import api.com.odnoklassniki.Odnoklassniki;
 
-	public class Discussions 
+	public class Discussions
 	{
 		/**
 		 * Get discussions for user.

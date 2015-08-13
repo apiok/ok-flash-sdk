@@ -1,7 +1,8 @@
 package api.com.odnoklassniki.sdk.events 
 {
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Events 
+
+	public class Events
 	{
 		/**
 		 * Returns number of events need to be displayed for the logged user : messages, notifications, feeds, ...

@@ -2,7 +2,7 @@ package api.com.odnoklassniki.events
 {
 	import flash.events.Event;
 	
-	public class ApiServerEvent extends Event 
+	public class ApiServerEvent extends Event
 	{
 		public static const CONNECTED:String = "odnoklassniki_connected";
 		public static const CONNECTION_ERROR:String = "odnoklassniki_connection_error";

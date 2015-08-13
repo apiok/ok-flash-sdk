@@ -3,7 +3,8 @@ package api.com.odnoklassniki.sdk.stream
 	import api.com.adobe.json.JSON;
 	import api.com.odnoklassniki.events.ApiCallbackEvent;
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Stream 
+
+	public class Stream
 	{
 		
 		private static var _callback:Function;

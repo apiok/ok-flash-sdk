@@ -1,7 +1,8 @@
 package api.com.odnoklassniki.sdk.share 
 {
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Share 
+
+	public class Share
 	{
 		
 		/**

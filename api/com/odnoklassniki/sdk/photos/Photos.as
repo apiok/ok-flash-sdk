@@ -3,7 +3,8 @@ package api.com.odnoklassniki.sdk.photos
 	import api.com.adobe.json.JSON;
 	import api.com.odnoklassniki.Odnoklassniki;
 	import api.com.odnoklassniki.sdk.errors.Errors;
-	public class Photos 
+
+	public class Photos
 	{
 		/**
 		 * Returns base URL used for photo upload. Can return empty value if same server should be used, otherwise returns base part of URL, which must be used to call photos.upload

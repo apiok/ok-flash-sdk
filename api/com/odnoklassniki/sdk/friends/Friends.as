@@ -1,7 +1,8 @@
 package api.com.odnoklassniki.sdk.friends 
 {
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Friends 
+
+	public class Friends
 	{
 		/**
 		 * Returns status of friendship between users specified by 2 arrays of the same lenght

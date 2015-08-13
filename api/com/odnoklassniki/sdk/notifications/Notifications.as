@@ -1,7 +1,8 @@
 package api.com.odnoklassniki.sdk.notifications 
 {
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Notifications 
+
+	public class Notifications
 	{
 		/**
 		 * Sends a simple Application-to-user notification.

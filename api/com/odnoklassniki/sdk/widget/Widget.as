@@ -1,7 +1,8 @@
 package api.com.odnoklassniki.sdk.widget 
 {
 	import api.com.odnoklassniki.Odnoklassniki;
-	public class Widget 
+
+	public class Widget
 	{
 		
 		/**
